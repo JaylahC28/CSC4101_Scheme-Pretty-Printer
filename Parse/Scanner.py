@@ -38,7 +38,12 @@ class Scanner:
             ch = self.read()
 
             # TODO: Skip white space and comments
-
+            while ch != "" and (ch in " \t\n\r\f" or ch == ';'):
+                if (ch== ';'):
+                    while ch != "" and ch != '\n':
+                        ch = self.read()
+                else:
+                    ch = self.read()
             # Return None on EOF
             if ch == "":
                 return None
@@ -74,25 +79,59 @@ class Scanner:
             elif ch == '"':
                 self.buf = []
                 # TODO: scan a string into the buffer variable buf
-    
+                ch = self.read()
+                while ch != "" and ch != '"':
+                    if ch == '\\':
+                        ch = self.read()
+                        if ch == "":
+                            break
+            
+                    self.buf.append(ch)
+                    ch = self.read()
+                if ch == "":
+                    sys.stderr.write("Unexpected EOF inside string\n")
+                    return None
+
                 return StrToken("".join(self.buf))
 
             # Integer constants
             elif self.isDigit(ch):
                 i = ord(ch) - ord('0')
                 # TODO: scan the number and convert it to an integer
-
+                while self.isDigit(self.peek()):
+                    ch = self.read()
+                    i = i * 10 + (ord(ch)- ord('0'))
                 # make sure that the character following the integer
                 # is not removed from the input stream
                 return IntToken(i)
     
             # Identifiers
-            elif ch >= 'A' and ch <= 'Z':
+            elif (
+                ch >= 'A' and ch <= 'Z'
+                or ch >= 'a' and ch <= 'z'
+                or ch in '!$%&*/:<=>?^_~+-'
+            ):
+
                 # or ch is some other vaid first character
                 # for an identifier
                 self.buf = []
                 # TODO: scan an identifier into the buffer variable buf
-
+                self.buf.append(ch.lower())
+                if ch not in ('+', '-'):
+                    while True:
+                        next_ch = self.peek()
+                        if next_ch == "":
+                            break 
+                        
+                        if (
+                            'A' <= next_ch <= 'Z'
+                            or 'a' <= next_ch <= 'z'
+                            or self.isDigit(next_ch)
+                            or next_ch in '!$%&*/:<=>?^_~+-.@'
+                        ):
+                            self.buf.append(self.read().lower())
+                        else:
+                            break
 
                 # make sure that the character following the identifier
                 # is not removed from the input stream
