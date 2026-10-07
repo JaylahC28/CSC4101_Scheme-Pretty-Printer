@@ -18,9 +18,31 @@ class Cons(Node):
     # object from the Special hierarchy and to leave the rest of
     # parsing up to the interpreter.
     def parseList(self):
-        # TODO: implement this function and any helper functions
-        # you might need
-        self.form = None
+
+    # helper function parselist + defines the special forms and their corresponding classes
+        from Special import Quote, Lambda, Begin, If, Let, Cond, Define, Set, Regular
+        forms = {"quote": Quote, "lambda": Lambda, "begin": Begin, "if": If,
+                 "let": Let, "cond": Cond, "define": Define, "set!": Set}
+        if self.car.isSymbol() and self.car.name in forms:
+            self.form = forms[self.car.name]()
+        else:
+            self.form = Regular()
+
+    def isPair(self):
+        return True
+
+    def getCar(self):
+        return self.car
+
+    def getCdr(self):
+        return self.cdr
+
+    def setCar(self, a):
+        self.car = a
+        self.parseList()
+
+    def setCdr(self, d):
+        self.cdr = d
 
     def print(self, n, p=False):
         self.form.print(self, n, p)

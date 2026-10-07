@@ -30,6 +30,9 @@ class BoolLit(Node):
                 raise Exception("Class BoolLit is a singleton")
             else:
                 BoolLit.__falseInstance = self
+        
+    def isBool(self):
+        return True
 
     def print(self, n, p=False):
         # There got to be a more efficient way to print n spaces.
