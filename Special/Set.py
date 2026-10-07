@@ -1,13 +1,19 @@
 # Set -- Parse tree node strategy for printing the special form set!
 
+import sys
 from Special import Special
 
 class Set(Special):
-    # TODO: Add fields and modify the constructor as needed.
     def __init__(self):
         pass
-    
-    def print(self, t, n, p):
-        # TODO: Implement this function.
-        pass
 
+    # (set! x 5) on one line like a regular list but always ends the line
+    def print(self, t, n, p):
+        m = abs(n)
+        if not p:
+            if n >= 0:
+                Special.indent(m)
+            sys.stdout.write("(")
+        t.getCar().print(-(m + 2))
+        Special.printRest(t.getCdr(), m)
+        sys.stdout.write("\n")

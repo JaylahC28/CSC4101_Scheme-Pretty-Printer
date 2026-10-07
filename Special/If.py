@@ -3,10 +3,11 @@
 from Special import Special
 
 class If(Special):
-    # TODO: Add fields and modify the constructor as needed.
     def __init__(self):
         pass
 
+# first two elements of the list are printed on the first line, and the rest indented below
     def print(self, t, n, p):
-        # TODO: Implement this function.
-        pass
+        Special.printTwoOnFirstLine(t, n, p)
+
+

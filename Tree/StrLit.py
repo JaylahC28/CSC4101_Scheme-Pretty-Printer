@@ -11,10 +11,11 @@ class StrLit(Node):
           return True
 
     def print(self, n, p=False):
-        # There got to be a more efficient way to print n spaces.
-        for _ in range(n):
-            sys.stdout.write(' ')
-        sys.stdout.write("\"" + self.strVal + "\"\n")
+        if n >= 0:
+            sys.stdout.write(' ' * n)
+        sys.stdout.write('"' + self.strVal + '"')
+        if n >= 0:
+            sys.stdout.write('\n')
 
 if __name__ == "__main__":
     id = StrLit("foo")

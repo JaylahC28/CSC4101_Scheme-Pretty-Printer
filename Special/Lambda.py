@@ -8,5 +8,4 @@ class Lambda(Special):
         pass
 
     def print(self, t, n, p):
-        # TODO: Implement this function.
-        pass
+        Special.printTwoOnFirstLine(t, n, p)

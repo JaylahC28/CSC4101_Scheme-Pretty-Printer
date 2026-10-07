@@ -1,5 +1,6 @@
 # Define -- Parse tree node strategy for printing the special form define
 
+import sys
 from Special import Special
 
 class Define(Special):
@@ -8,5 +9,15 @@ class Define(Special):
         pass
 
     def print(self, t, n, p):
-        # TODO: Implement this function.
-        pass
+        rest = t.getCdr()
+        if rest.isPair() and rest.getCar().isPair():
+            Special.printTwoOnFirstLine(t, n, p)
+        else:
+            m = abs(n)
+            if not p:
+                if n >= 0:
+                    Special.indent(m)
+                sys.stdout.write("(")
+            t.getCar().print(-(m + 2))
+            Special.printRest(rest, m)
+            sys.stdout.write("\n")
